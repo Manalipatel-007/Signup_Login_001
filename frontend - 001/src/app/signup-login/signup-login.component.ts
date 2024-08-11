@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
+
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router'; 
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup-login',
@@ -15,101 +15,73 @@ export class SignupLoginComponent {
   isVerified: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+
+  // for signup
   username: string = '';
   number: string = '';
   password: string = '';
-  loginEmail: string = '';  
-  loginErrorMessage: string = '';  
-  loginSuccessMessage: string = '';  
+  confirmPassword: string = '';
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
-  signUp() {
-    if (this.username && this.email && this.number && this.password) {
-      const userData = {
-        username: this.username,
-        email: this.email,
-        number: this.number,
-        password: this.password,
-      };
-  
-      this.authService.signUp(userData).subscribe(
-        (response: any) => {
-          // Handle success response
-          console.log('Sign-up response:', response);
-          localStorage.setItem('userData', JSON.stringify(userData));
-          this.successMessage = 'Sign up successful!';
-          this.errorMessage = '';
-          this.clearSignupFields();
-        },
-        (error: HttpErrorResponse) => {
-          console.error('Sign-up error:', error);
-          this.errorMessage = 'Sign up failed. Please try again.';
-          this.successMessage = '';
-        }
-      );
-    } else {
-      this.errorMessage = 'Please fill in all the fields.';
-      this.successMessage = '';
-    }
-  }
-
-  sendOtp(loginEmail: string) {
-    if (loginEmail) {
-      this.authService.sendOtp(loginEmail).subscribe(
-        (response: any) => {
-          if (response.success) {
-            this.otpSent = true; // Update state to show OTP input field
-            this.successMessage = 'OTP sent successfully!';
+      // Function to send OTP
+  sendOtp() {
+    if (this.email) {
+      this.http.post('http://localhost:3000/sendOtp', { email: this.email }, { responseType: 'text' })
+        .subscribe(
+          (response: string) => {
+            this.otpSent = true;
+            this.successMessage = response;     // Display success message from server
             this.errorMessage = '';
-          } else {
-            this.errorMessage = response.message;
-            this.successMessage = '';
+          },
+          (error) => {
+            this.errorMessage = 'Error sending OTP. Please try again.';
+            this.successMessage = ''; 
           }
-        },
-        (error: HttpErrorResponse) => {
-          console.error('Send OTP error:', error);
-          this.errorMessage = 'Failed to send OTP. Please try again.';
-          this.successMessage = '';
-        }
-      );
+        );
     } else {
-      this.errorMessage = 'Please enter your email.';
-      this.successMessage = '';
+      this.errorMessage = 'Please enter a valid email address.';
     }
   }
-
+  
+  // Function to verify OTP
   verifyOtp() {
-    if (this.otp && this.loginEmail) {
-      this.authService.verifyOtp(this.otp, this.loginEmail).subscribe(
-        (response: any) => {
-          if (response.success) {
-            this.isVerified = true;
-            this.loginSuccessMessage = 'Login successful!';
-            this.loginErrorMessage = '';
-            this.otp = '';
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.loginErrorMessage = 'Invalid OTP. Please try again.';
-            this.loginSuccessMessage = '';
+    if (this.otp) {
+      this.http.post('http://localhost:3000/verifyOtp', { otp: this.otp }, { responseType: 'text' })
+        .subscribe(
+          (response: string) => {
+            if (response === 'OTP verified successfully') {
+              this.isVerified = true;
+              this.successMessage = response; // Display success message
+              this.errorMessage = '';
+              this.router.navigate(['/dashboard']); // Redirect to dashboard
+            } else {
+              this.errorMessage = response; // Handle custom error messages from server
+              this.isVerified = false;
+              this.successMessage = ''; 
+            }
+          },
+          (error) => {
+            this.errorMessage = 'Invalid OTP. Please try again.';
+            this.successMessage = ''; 
           }
-        },
-        (error: HttpErrorResponse) => {
-          console.error('Verify OTP error:', error);
-          this.loginErrorMessage = 'Failed to verify OTP. Please try again.';
-          this.loginSuccessMessage = '';
-        }
-      );
+        );
     } else {
-      this.loginErrorMessage = 'Please enter the OTP.';
-      this.loginSuccessMessage = '';
+      this.errorMessage = 'Please enter the OTP.';
     }
   }
-
-  private clearSignupFields() {
-    this.username = '';
-    this.email = '';
-    this.number = '';
-    this.password = '';
+  
+  // Method for signup
+  signUp(signUpForm: any) {
+    if (this.password === this.confirmPassword) {
+      console.log('Signing up:', this.username, this.email, this.number);
+    } else {
+      this.errorMessage = 'Passwords do not match.';
+    }
   }
+  
 }
+
+
+
+

@@ -13,12 +13,12 @@ export class AuthService {
   
   // Method to sign up user
  
-  signUp(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/signup`, {userData});
+  signUp(userData: any) {
+    return this.http.post(`${this.apiUrl}/signup`, {userData});
   }
 
-  sendOtp(email: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/sendOtp`, { email });
+  sendOtp(email: string){
+    return this.http.post(`${this.apiUrl}/sendOtp`, { email });
   }
   
 
