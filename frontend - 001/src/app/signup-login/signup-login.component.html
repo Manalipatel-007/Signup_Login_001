@@ -1,0 +1,176 @@
+<!-- 
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Navbar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <style>
+        /* Add your custom CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="main">    
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form #signUpForm="ngForm" (ngSubmit)="signUp(signUpForm)">
+                <label for="chk" aria-hidden="true">Sign up</label>
+                <input type="text" name="username" placeholder="User name" [(ngModel)]="username" required>
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required>
+                <input type="number" name="number" placeholder="Number" [(ngModel)]="number" required>
+                <input type="password" name="password" placeholder="Password" [(ngModel)]="password" required autocomplete="new-password">
+                <button type="submit">Sign up</button>
+            </form>
+        </div>
+
+        <div class="login">
+            <form #loginForm="ngForm">
+                <label for="chk" aria-hidden="true">Login</label>
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required>
+                
+                <button type="button" (click)="sendOtp()">Send OTP</button>
+
+                <div *ngIf="otpSent">
+                    <input type="text" name="otp" placeholder="Enter OTP" [(ngModel)]="otp" required>
+                    <button type="button" (click)="verifyOtp()">Verify OTP</button>
+                </div>
+
+                <!-- Display error message 
+                <div *ngIf="errorMessage" class="error-message">
+                    {{ errorMessage }}
+                </div>
+
+                <!-- Display success message 
+                <div *ngIf="successMessage" class="success-message">
+                    {{ successMessage }}
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>  -->
+
+<!--//////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slide Navbar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main">    
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form (ngSubmit)="signUp()">
+                <label for="chk" aria-hidden="true">Sign up</label>
+                <input type="text" name="username" placeholder="User name" [(ngModel)]="username" required>
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required>
+                <input type="number" name="number" placeholder="Number" [(ngModel)]="number" required>
+                <input type="password" name="password" placeholder="Password" [(ngModel)]="password" required>
+                <button class="btn" type="submit">Sign up</button>
+            </form>
+
+            <!-- Display success message 
+            <div *ngIf="successMessage" class="success-message">
+                {{ successMessage }}
+            </div>
+
+            <!-- Display error message
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+        </div>
+
+        <div class="login">
+            <form>
+                <label for="chk" aria-hidden="true">Login</label>
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required>
+                
+                <button type="button" (click)="sendOtp()">Send OTP</button>
+
+                <div *ngIf="otpSent">
+                    <input type="text" name="otp" placeholder="Enter OTP" [(ngModel)]="otp" required>
+                    <button type="button" (click)="verifyOtp()">Verify OTP</button>
+                </div>
+
+                <!-- Display error message 
+                <div *ngIf="errorMessage" class="error-message">
+                    {{ errorMessage }}
+                </div>
+
+                <!-- Display success message 
+                <div *ngIf="successMessage" class="success-message">
+                    {{ successMessage }}
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>  -->
+
+
+<!-- this is next -->
+<!-- src/app/signup-login/signup-login.component.html -->
+<!-- src/app/signup-login/signup-login.component.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Slide Navbar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form (ngSubmit)="signUp()">
+                <label for="chk" aria-hidden="true">Sign up</label>
+                <input type="text" name="username" placeholder="User name" [(ngModel)]="username" required autocomplete="username">
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required autocomplete="email">
+                <input type="tel" name="number" placeholder="Number" [(ngModel)]="number" required autocomplete="tel">
+                <input type="password" name="password" placeholder="Password" [(ngModel)]="password" required autocomplete="new-password">
+                <button class="btn" type="submit">Sign up</button>
+            </form>
+
+            <!-- Display success message -->
+            <div *ngIf="successMessage" class="success-message">
+                {{ successMessage }}
+            </div>
+
+            <!-- Display error message -->
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+        </div>
+
+        <div class="login">
+            <form (ngSubmit)="verifyOtp()">
+                <label for="chk" aria-hidden="true">Login</label>
+                <input type="email" name="loginEmail" placeholder="Email" [(ngModel)]="loginEmail" required autocomplete="email">
+                <button type="button" (click)="sendOtp(loginEmail)">Send OTP</button>
+
+                <div *ngIf="otpSent">
+                    <input type="text" name="otp" class="otp-input" placeholder="Enter OTP" [(ngModel)]="otp" required autocomplete="one-time-code">
+                    <button type="submit">Verify OTP</button>
+                </div>
+
+                <div *ngIf="loginErrorMessage" class="error-message">
+                    {{ loginErrorMessage }}
+                </div>
+
+                <div *ngIf="loginSuccessMessage" class="success-message">
+                    {{ loginSuccessMessage }}
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
