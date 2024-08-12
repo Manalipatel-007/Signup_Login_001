@@ -37,6 +37,7 @@
                 <input type="email" name="loginEmail" placeholder="Email" [(ngModel)]="loginEmail" required autocomplete="email">
                 <button type="button" (click)="sendOtp(loginEmail)">Send OTP</button>
 
+  
                 <div *ngIf="otpSent">
                     <input type="text" name="otp" class="otp-input" placeholder="Enter OTP" [(ngModel)]="otp" required autocomplete="one-time-code">
                     <button type="submit">Verify OTP</button>

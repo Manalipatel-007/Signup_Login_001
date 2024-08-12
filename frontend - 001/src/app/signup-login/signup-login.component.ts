@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+// import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -56,13 +56,13 @@ export class SignupLoginComponent {
     try {
       const response = this.authService.sendOtp(loginEmail)
       response.subscribe((response: any) => {
-        if (response.success) {
+        if (response) {
           this.otpSent = true; // Update state to show OTP input field
-          this.successMessage = 'OTP sent successfully!';
-          this.errorMessage = '';
+          this.loginSuccessMessage = 'OTP sent successfully!';
+          this.loginErrorMessage = '';
         } else {
-          this.errorMessage = response.message;
-          this.successMessage = '';
+          this.loginErrorMessage = response.message;
+          this.loginSuccessMessage = '';
         }
       });
     } catch (err) {
