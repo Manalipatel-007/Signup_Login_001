@@ -40,12 +40,12 @@ const transporter = nodemailer.createTransport({
 
 
 // Route to sign up a new user
-app.post('/signup', async (req, res) => {
+app.post('/signup', async(req, res) => {
   const userData = req.body.userData;
   const { username, email } = userData;
 
   //CHECK USER ALREADY EXIST OR NOT 
-  const findUser = await User.findOne( { email : email } );
+  const findUser = await User.findOne({ email : email});
   if (findUser){
     res.status(409).send({ success : false , message : `This user_name ${username} or email ${email} already exists`});
   }else{
@@ -56,14 +56,14 @@ app.post('/signup', async (req, res) => {
 });
 
 // Route to send OTP
-app.post('/sendOtp', async (req, res) => {
+app.post('/sendOtp', async(req, res) => {
   try {
     const { email } = req.body;
 
     //CHECK USER ALREADY EXIST OR NOT 
     const findUser = await User.findOne({ email : email });
     if (!findUser){
-      return res.status(409).send({ success: false, message: `This email ${email} does not exists`});
+        res.status(409).send({ success: false, message: `This email ${email} does not exists`});
     }
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpiration = Date.now() + 5 * 60 * 1000; // OTP valid for 5 minutes
